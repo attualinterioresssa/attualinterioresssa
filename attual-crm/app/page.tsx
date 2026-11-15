@@ -75,7 +75,7 @@ export default function Home() {
           <LeadForm />
         </section>
       </div>
-      <footer><div className="wrap">Attual Interiores · Móveis planejados · Salvador, BA</div></footer>
+      <footer><div className="wrap">Attual Interiores · Móveis planejados · Salvador, BA · <a href="/privacidade">Privacidade</a></div></footer>
     </>
   );
 }

@@ -1,16 +1,11 @@
 "use client";
 import { useState } from "react";
+import { SERVICOS, MOMENTO, PRAZO, INVEST, PROJETO, type Opt } from "@/lib/opcoes";
 
 const SB_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 const SB_KEY = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? "";
 const WA = process.env.NEXT_PUBLIC_WHATSAPP ?? "5571982246075";
 
-type Opt = [string, string];
-const SERVICOS: Opt[] = [["cozinha","Cozinha planejada"],["guarda-roupa","Guarda-roupa"],["quarto","Quarto"],["painel","Painel"],["banheiro","Banheiro"],["escritorio","Escritório"],["personalizado","Móvel personalizado"]];
-const MOMENTO: Opt[] = [["obra_andamento","Obra ou reforma em andamento"],["imovel_pronto","Imóvel pronto, quero planejar"],["na_planta","Imóvel na planta ou comprando"],["pesquisando","Só pesquisando"]];
-const PRAZO: Opt[] = [["ate_30d","Em até 30 dias"],["1_3m","De 1 a 3 meses"],["3_6m","De 3 a 6 meses"],["sem_prazo","Sem prazo definido"]];
-const INVEST: Opt[] = [["acima_40","Acima de R$ 40 mil"],["20_40","R$ 20 mil a R$ 40 mil"],["10_20","R$ 10 mil a R$ 20 mil"],["ate_10","Até R$ 10 mil"],["nao_informar","Prefiro não informar"]];
-const PROJETO: Opt[] = [["projeto_medidas","Tenho projeto e medidas"],["medidas","Tenho só as medidas"],["referencias","Tenho só referências"],["nada","Ainda não tenho nada"]];
 
 export default function LeadForm() {
   const [errs, setErrs] = useState<Record<string, string>>({});
@@ -95,7 +90,7 @@ export default function LeadForm() {
       <Sel k="investimento" label="Faixa de investimento" opts={INVEST} />
       <Sel k="projeto" label="Você já tem projeto ou medidas?" opts={PROJETO} />
       <p className="note full">Fotos e referências: depois de enviar, você poderá mandá-las direto pelo WhatsApp.</p>
-      <label className="chk full"><input type="checkbox" name="consent_dados" /><span>Autorizo o uso dos meus dados para contato sobre este orçamento, conforme o aviso de privacidade (obrigatório).</span></label>
+      <label className="chk full"><input type="checkbox" name="consent_dados" /><span>Autorizo o uso dos meus dados para contato sobre este orçamento, conforme o <a href="/privacidade" target="_blank" rel="noopener noreferrer">aviso de privacidade</a> (obrigatório).</span></label>
       <Err k="consent_dados" />
       <label className="chk full"><input type="checkbox" name="consent_marketing" /><span>Aceito receber novidades e ofertas da Attual (opcional).</span></label>
       {fail && (

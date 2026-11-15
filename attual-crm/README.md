@@ -16,3 +16,11 @@ Next.js 14 + TypeScript. O formulário grava no Supabase pela função `registra
 ## Segurança
 - Só a chave publishable vai no site. A secret key nunca entra no código nem na Vercel do site.
 - As tabelas têm RLS ligado e sem acesso público; o cadastro entra só pela função.
+
+## Fase 3: CRM (login, funil, ficha, tarefas)
+1. Supabase > Authentication > Users > Add user (e-mail e senha, marcando "Auto Confirm User").
+2. Supabase > Authentication > Sign In / Providers > Email: desligue "Allow new users to sign up".
+3. SQL Editor: rode `fase3-crm.sql` (depois do `fase2-banco.sql`).
+4. Envie os arquivos novos ao GitHub; a Vercel publica sozinha.
+5. Acesse `/login` no site e entre com o e-mail e a senha criados.
+Páginas: `/crm` (funil Kanban), `/crm/<id>` (ficha), `/privacidade` (aviso de privacidade).
