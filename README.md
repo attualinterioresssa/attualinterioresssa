@@ -29,3 +29,4 @@ Páginas: `/crm` (funil Kanban), `/crm/<id>` (ficha), `/privacidade` (aviso de p
 1. SQL Editor: rode `fase4-whatsapp.sql` (depois do `fase3-crm.sql`).
 2. Envie os arquivos novos ao GitHub.
 3. Na ficha do cliente, use "Mensagens rápidas". Os modelos são editados em `/crm/mensagens`.
+4. atualizado
