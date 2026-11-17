@@ -80,6 +80,32 @@ function Detalhe() {
     await sb.from("tasks").update({ concluida: !t.concluida }).eq("id", t.id); load();
   }
 
+  const [visitas, setVisitas] = useState<any[]>([]);
+  const [vd, setVd] = useState("");
+  const [ve, setVe] = useState("");
+  const [vo, setVo] = useState("");
+  const loadVisitas = useCallback(async () => {
+    const { data } = await sb.from("appointments").select("*").eq("lead_id", id).order("data_hora");
+    setVisitas(data ?? []);
+  }, [id]);
+  useEffect(() => { loadVisitas(); }, [loadVisitas]);
+  async function agendar() {
+    if (!vd) return;
+    const dt = new Date(vd);
+    await sb.from("appointments").insert({
+      lead_id: id, data_hora: dt.toISOString(), endereco: ve || null, observacoes: vo || null,
+      responsavel_id: lead?.responsavel_id ?? (meId || null), servico: lead?.services?.nome ?? null,
+    });
+    await sb.from("activities").insert({ lead_id: id, user_id: meId || null, tipo: "visita", descricao: `Visita agendada para ${dt.toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" })}` });
+    if (["novo_lead", "qualificado", "contato_realizado"].includes(lead?.etapa)) await sb.from("leads").update({ etapa: "visita_agendada" }).eq("id", id);
+    setVd(""); setVe(""); setVo(""); loadVisitas(); load();
+  }
+  async function statusVisita(v: any, status: string) {
+    await sb.from("appointments").update({ status }).eq("id", v.id);
+    if (status === "realizada" && lead?.etapa === "visita_agendada") await sb.from("leads").update({ etapa: "visita_realizada" }).eq("id", id);
+    loadVisitas(); load();
+  }
+
   if (erro && !lead) return <p className="err">{erro}</p>;
   if (!lead) return <p className="note">Carregando...</p>;
   const c = lead.customers ?? {};
@@ -104,10 +130,23 @@ function Detalhe() {
             <select value={lead.responsavel_id ?? ""} onChange={(e) => upd({ responsavel_id: e.target.value || null })}><option value="">Sem responsável</option>{users.map((u) => <option key={u.id} value={u.id}>{u.nome}</option>)}</select></div>
           <div className="f"><label>Valor estimado (R$)</label>
             <input type="number" min="0" step="0.01" defaultValue={lead.valor ?? ""} onBlur={(e) => upd({ valor: e.target.value === "" ? null : Number(e.target.value) })} /></div>
+          <label className="chk"><input type="checkbox" checked={!!lead.nao_contatar} onChange={(e) => upd({ nao_contatar: e.target.checked })} /><span>Cliente pediu para não ser contatado (cancela os lembretes)</span></label>
           <h3>Respostas do formulário</h3>
           <p className="note">Momento: {rotulo(MOMENTO, r?.momento)}<br />Prazo: {rotulo(PRAZO, r?.prazo)}<br />Investimento: {rotulo(INVEST, r?.investimento)}<br />Projeto: {rotulo(PROJETO, r?.projeto)}</p>
         </div>
         <div>
+          <h3>Visitas</h3>
+          {visitas.map((v) => (
+            <div key={v.id} className="linha">
+              <span className="note" style={{ flex: 1 }}>{new Date(v.data_hora).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" })}{v.endereco ? ` · ${v.endereco}` : ""}</span>
+              <select value={v.status} onChange={(e) => statusVisita(v, e.target.value)} aria-label="Status da visita" style={{ width: "auto" }}>
+                {["agendada", "confirmada", "realizada", "remarcada", "cancelada"].map((s) => <option key={s} value={s}>{s}</option>)}
+              </select>
+            </div>
+          ))}
+          <div className="linha"><input type="datetime-local" value={vd} onChange={(e) => setVd(e.target.value)} aria-label="Data e hora da visita" /></div>
+          <div className="linha"><input placeholder="Endereço da visita" value={ve} onChange={(e) => setVe(e.target.value)} /><input placeholder="Observações" value={vo} onChange={(e) => setVo(e.target.value)} /></div>
+          <button className="btn small" onClick={agendar}>Agendar visita</button>
           <h3>Mensagens rápidas</h3>
           <div className="f"><select value={sel} onChange={(e) => setSel(e.target.value)} aria-label="Modelo de mensagem"><option value="">Escolha um modelo</option>{tpls.map((t) => <option key={t.slug} value={t.slug}>{t.titulo}</option>)}</select></div>
           <textarea rows={5} value={texto} onChange={(e) => setTexto(e.target.value)} placeholder="A mensagem aparece aqui. Você pode editar antes de enviar." />
