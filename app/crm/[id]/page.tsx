@@ -7,6 +7,7 @@ import { sb } from "@/lib/supabase";
 import { ETAPAS } from "@/lib/etapas";
 import { MOMENTO, PRAZO, INVEST, PROJETO, rotulo, zap } from "@/lib/opcoes";
 import { preencher } from "@/lib/mensagens";
+import Orcamentos from "@/components/Orcamentos";
 
 export default function Ficha() {
   return <AuthGate><Detalhe /></AuthGate>;
@@ -135,6 +136,7 @@ function Detalhe() {
           <p className="note">Momento: {rotulo(MOMENTO, r?.momento)}<br />Prazo: {rotulo(PRAZO, r?.prazo)}<br />Investimento: {rotulo(INVEST, r?.investimento)}<br />Projeto: {rotulo(PROJETO, r?.projeto)}</p>
         </div>
         <div>
+          <Orcamentos leadId={id} onChange={load} />
           <h3>Visitas</h3>
           {visitas.map((v) => (
             <div key={v.id} className="linha">
