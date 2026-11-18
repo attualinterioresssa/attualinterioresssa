@@ -80,3 +80,5 @@ textarea{background:var(--panel);border:1px solid var(--graph);color:var(--text)
 .tab{width:100%;border-collapse:collapse;font-size:14px}
 .tab th,.tab td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
 .tab th{color:var(--champ);font-weight:500}
+.cookies{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:50;background:var(--panel);border:1px solid var(--graph);padding:14px 16px;display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;font-size:14px;max-width:760px;margin:0 auto}
+.cookies a{color:var(--champ)}
