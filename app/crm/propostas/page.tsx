@@ -18,7 +18,7 @@ function Lista() {
   const [erro, setErro] = useState("");
 
   useEffect(() => {
-    sb.from("proposals").select("id,numero,data,cliente_nome,status,proposal_items(qtd,valor)").order("created_at", { ascending: false })
+    sb.from("proposals").select("id,numero,data,cliente_nome,status,desconto,proposal_items(qtd,valor)").order("created_at", { ascending: false })
       .then(({ data, error }) => { if (error) setErro(error.message); else setProps(data ?? []); });
     sb.from("leads").select("id,customers(nome)").order("created_at", { ascending: false }).limit(500)
       .then(({ data }) => setLeads(data ?? []));
@@ -45,7 +45,7 @@ function Lista() {
                 <td><Link href={`/crm/propostas/${p.id}`}>{p.numero}</Link></td>
                 <td>{new Date(p.data + "T00:00").toLocaleDateString("pt-BR")}</td>
                 <td>{p.cliente_nome}</td>
-                <td>{brl((p.proposal_items ?? []).reduce((s: number, i: any) => s + i.qtd * Number(i.valor), 0))}</td>
+                <td>{brl((p.proposal_items ?? []).reduce((s: number, i: any) => s + i.qtd * Number(i.valor), 0) - Number(p.desconto || 0))}</td>
                 <td><span className="badge">{p.status}</span></td>
               </tr>
             ))}

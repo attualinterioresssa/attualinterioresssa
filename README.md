@@ -29,4 +29,43 @@ Páginas: `/crm` (funil Kanban), `/crm/<id>` (ficha), `/privacidade` (aviso de p
 1. SQL Editor: rode `fase4-whatsapp.sql` (depois do `fase3-crm.sql`).
 2. Envie os arquivos novos ao GitHub.
 3. Na ficha do cliente, use "Mensagens rápidas". Os modelos são editados em `/crm/mensagens`.
-4. atualizado
+
+## Fase 5: agenda de visitas e follow-up
+1. SQL Editor: rode `fase5-agenda.sql` (depois do `fase4-whatsapp.sql`).
+2. Envie os arquivos novos ao GitHub (atenção às pastas `app/crm/agenda`, `app/crm/[id]` e `components`).
+3. Ao mover um lead para "Orçamento enviado", o sistema cria lembretes nos dias 1, 3, 7, 15 e 30, visíveis em `/crm/agenda`.
+4. Venda fechada, perdido ou "não contatar" cancelam os lembretes pendentes.
+
+## Fase 6: orçamentos, vendas, produção e entregas
+1. SQL Editor: rode `fase6-orcamentos.sql` (depois do `fase5-agenda.sql`).
+2. Envie os arquivos novos ao GitHub (pasta inteira, conteúdo do zip).
+3. Na ficha do cliente: "Orçamentos" (versões, PDF privado, enviar, fechar venda) e "Produção". Painel geral em `/crm/producao`.
+
+## Fase 7: dashboard e campanhas
+1. SQL Editor: rode `fase7-campanhas.sql` (depois do `fase6-orcamentos.sql`).
+2. Envie os arquivos novos ao GitHub (conteúdo inteiro do zip).
+3. `/crm/dashboard`: indicadores, gráficos por período e exportação CSV. `/crm/campanhas`: lançamentos de investimento (manual ou CSV) e análise por campanha. As integrações com Google Ads, GA4, GTM, Meta Pixel e Conversions API aparecem como pendentes.
+
+## Fase 8: segurança, LGPD, testes e documentação
+1. SQL Editor: rode `fase8-seguranca.sql`. As duas consultas finais devem voltar vazias.
+2. SQL Editor: rode `teste-fluxo.sql`. Deve aparecer "TESTE OK (nada foi gravado)" em vermelho.
+3. Envie os arquivos novos ao GitHub (conteúdo inteiro do zip).
+4. Documentação em `docs/`: DOCUMENTACAO.md, TESTES.md e BACKUP.md.
+5. Pixels: preencha `NEXT_PUBLIC_GTM_ID` ou `NEXT_PUBLIC_META_PIXEL_ID` na Vercel quando tiver os IDs. O banner de cookies aparece só nesse caso.
+
+## Fase 9: propostas comerciais (PDF no modelo da empresa)
+1. SQL Editor: rode `fase9-propostas.sql` (depois do `fase8-seguranca.sql`).
+2. Envie os arquivos novos ao GitHub, mantendo as pastas (`app/crm/propostas`, `lib`, `public/logo.png`).
+3. `/crm/propostas/empresa`: preencha telefone, banco, agência e conta, titular e PIX (só o administrador salva).
+4. Na ficha do cliente: "Redigir proposta (PDF)". No editor, "Ver / Imprimir PDF" e "Registrar no funil como orçamento".
+
+## Fase 10: contratos e segundo modelo de proposta
+1. SQL Editor: rode `fase10-contratos.sql` (depois do `fase9-propostas.sql`).
+2. Envie os arquivos novos ao GitHub (conteúdo inteiro do zip).
+3. `/crm/propostas/empresa`: preencha também os dados do representante legal (nome, cargo, qualificação e CPF).
+4. Na proposta: escolha o modelo do PDF (clássico ou moderno) e use "Gerar contrato". O contrato nasce com as cláusulas do modelo da empresa, todas editáveis; depois: Ver / Imprimir PDF, Enviar pelo WhatsApp, anexar o PDF assinado e Marcar como assinado (bloqueia o texto e fecha a venda no funil quando a proposta foi registrada como orçamento).
+
+## Fase 11: medidor de markup nas propostas
+1. SQL Editor: rode `fase11-markup.sql` (depois do `fase10-contratos.sql`).
+2. Envie os arquivos novos ao GitHub (conteúdo inteiro do zip).
+3. Na proposta: informe o custo interno de cada item. O painel mostra custo, venda, lucro, margem, markup, simulador e desconto limite seguro. A meta de margem (padrão 35%) fica em Propostas > Dados da empresa. Custos e margem nunca aparecem no PDF do cliente.
