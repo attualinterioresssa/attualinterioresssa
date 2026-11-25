@@ -7,7 +7,7 @@ export default function Privacidade() {
     <div className="wrap" style={{ maxWidth: 760, paddingTop: 32, paddingBottom: 48 }}>
       <p><Link href="/">← Voltar ao site</Link></p>
       <h1 style={{ fontSize: "2.2rem" }}>Aviso de privacidade</h1>
-      <p className="note">Atualizado em 14 de novembro de 2026</p>
+      <p className="note">Atualizado em 17 de novembro de 2026</p>
 
       <section><h2>Quem é o responsável</h2>
         <p>Attual Interiores, marcenaria de móveis planejados em Salvador (BA). Responsável: Erilan Jesus dos Santos. Contato para assuntos de privacidade: erilandossantos@gmail.com.</p></section>
@@ -22,7 +22,7 @@ export default function Privacidade() {
         <p>Consentimento (Lei 13.709/2018, LGPD) para o contato comercial e, separadamente, para o marketing. Você pode revogar quando quiser.</p></section>
 
       <section><h2>Com quem os dados são tratados</h2>
-        <p>Usamos prestadores de tecnologia para operar o sistema: Supabase (banco de dados), Vercel (hospedagem do site) e WhatsApp, quando você conversa conosco por lá. Não vendemos os seus dados.</p></section>
+        <p>Usamos prestadores de tecnologia para operar o sistema: Supabase (banco de dados), Vercel (hospedagem do site) WhatsApp, quando você conversa conosco por lá, e Google e Meta, se você aceitar os cookies de medição. Não vendemos os seus dados.</p></section>
 
       <section><h2>Por quanto tempo guardamos</h2>
         <p>Pelo tempo necessário para o atendimento e para cumprir obrigações legais, ou até você pedir a exclusão.</p></section>
@@ -31,7 +31,7 @@ export default function Privacidade() {
         <p>Você pode pedir confirmação de que tratamos seus dados, acesso, correção, exclusão, informação sobre compartilhamento e a revogação do consentimento. Escreva para erilandossantos@gmail.com informando o nome e o telefone usados no formulário.</p></section>
 
       <section><h2>Cookies</h2>
-        <p>Este site não usa cookies de publicidade no momento. Se passarmos a usar ferramentas de medição de anúncios, este aviso será atualizado.</p></section>
+        <p>Com o seu consentimento, dado ou recusado no aviso exibido ao acessar o site, podemos usar ferramentas do Google (Tag Manager, Analytics e Ads) e do Meta (Pixel) para medir visitas e o desempenho dos anúncios. Se você recusar, nenhuma dessas ferramentas é carregada. Para mudar de ideia, limpe os dados do site no navegador.</p></section>
     </div>
   );
 }

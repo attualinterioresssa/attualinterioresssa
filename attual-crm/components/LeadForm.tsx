@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { eventoLead } from "@/components/CookieConsent";
 import { SERVICOS, MOMENTO, PRAZO, INVEST, PROJETO, type Opt } from "@/lib/opcoes";
 
 const SB_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
@@ -17,6 +18,7 @@ export default function LeadForm() {
     e.preventDefault();
     const f = new FormData(e.currentTarget);
     const g = (k: string) => String(f.get(k) ?? "").trim();
+    if (g("empresa_site")) { setWa(`https://wa.me/${WA}`); return; } // antispam: campo escondido preenchido por robôs
     const tel = g("telefone").replace(/\D/g, "");
     const er: Record<string, string> = {};
     if (g("nome").split(/\s+/).length < 2) er.nome = "Informe nome e sobrenome.";
@@ -47,6 +49,7 @@ export default function LeadForm() {
       const d = await r.json();
       const servico = SERVICOS.find(([v]) => v === payload.servico)?.[1].toLowerCase();
       const msg = `Olá! Sou ${payload.nome}, de ${payload.bairro}, ${payload.cidade}. Preenchi o formulário sobre ${servico} (ref. ${String(d.id_lead).slice(0, 8)}). Gostaria de conversar sobre o meu projeto.`;
+      eventoLead(payload.servico);
       setWa(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`);
     } catch {
       setFail(true);
@@ -78,6 +81,7 @@ export default function LeadForm() {
 
   return (
     <form onSubmit={onSubmit} noValidate>
+      <input name="empresa_site" tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }} />
       <div className="f full"><label htmlFor="nome">Nome completo</label><input id="nome" name="nome" autoComplete="name" /><Err k="nome" /></div>
       <div className="f"><label htmlFor="telefone">WhatsApp com DDD</label><input id="telefone" name="telefone" type="tel" inputMode="tel" autoComplete="tel" placeholder="(71) 9 0000-0000" /><Err k="telefone" /></div>
       <div className="f"><label htmlFor="nascimento">Data de nascimento <small>(opcional)</small></label><input id="nascimento" name="nascimento" type="date" /></div>

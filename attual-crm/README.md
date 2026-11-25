@@ -24,3 +24,66 @@ Next.js 14 + TypeScript. O formulário grava no Supabase pela função `registra
 4. Envie os arquivos novos ao GitHub; a Vercel publica sozinha.
 5. Acesse `/login` no site e entre com o e-mail e a senha criados.
 Páginas: `/crm` (funil Kanban), `/crm/<id>` (ficha), `/privacidade` (aviso de privacidade).
+
+## Fase 4: WhatsApp e mensagens rápidas
+1. SQL Editor: rode `fase4-whatsapp.sql` (depois do `fase3-crm.sql`).
+2. Envie os arquivos novos ao GitHub.
+3. Na ficha do cliente, use "Mensagens rápidas". Os modelos são editados em `/crm/mensagens`.
+
+## Fase 5: agenda de visitas e follow-up
+1. SQL Editor: rode `fase5-agenda.sql` (depois do `fase4-whatsapp.sql`).
+2. Envie os arquivos novos ao GitHub (atenção às pastas `app/crm/agenda`, `app/crm/[id]` e `components`).
+3. Ao mover um lead para "Orçamento enviado", o sistema cria lembretes nos dias 1, 3, 7, 15 e 30, visíveis em `/crm/agenda`.
+4. Venda fechada, perdido ou "não contatar" cancelam os lembretes pendentes.
+
+## Fase 6: orçamentos, vendas, produção e entregas
+1. SQL Editor: rode `fase6-orcamentos.sql` (depois do `fase5-agenda.sql`).
+2. Envie os arquivos novos ao GitHub (pasta inteira, conteúdo do zip).
+3. Na ficha do cliente: "Orçamentos" (versões, PDF privado, enviar, fechar venda) e "Produção". Painel geral em `/crm/producao`.
+
+## Fase 7: dashboard e campanhas
+1. SQL Editor: rode `fase7-campanhas.sql` (depois do `fase6-orcamentos.sql`).
+2. Envie os arquivos novos ao GitHub (conteúdo inteiro do zip).
+3. `/crm/dashboard`: indicadores, gráficos por período e exportação CSV. `/crm/campanhas`: lançamentos de investimento (manual ou CSV) e análise por campanha. As integrações com Google Ads, GA4, GTM, Meta Pixel e Conversions API aparecem como pendentes.
+
+## Fase 8: segurança, LGPD, testes e documentação
+1. SQL Editor: rode `fase8-seguranca.sql`. As duas consultas finais devem voltar vazias.
+2. SQL Editor: rode `teste-fluxo.sql`. Deve aparecer "TESTE OK (nada foi gravado)" em vermelho.
+3. Envie os arquivos novos ao GitHub (conteúdo inteiro do zip).
+4. Documentação em `docs/`: DOCUMENTACAO.md, TESTES.md e BACKUP.md.
+5. Pixels: preencha `NEXT_PUBLIC_GTM_ID` ou `NEXT_PUBLIC_META_PIXEL_ID` na Vercel quando tiver os IDs. O banner de cookies aparece só nesse caso.
+
+## Fase 9: propostas comerciais (PDF no modelo da empresa)
+1. SQL Editor: rode `fase9-propostas.sql` (depois do `fase8-seguranca.sql`).
+2. Envie os arquivos novos ao GitHub, mantendo as pastas (`app/crm/propostas`, `lib`, `public/logo.png`).
+3. `/crm/propostas/empresa`: preencha telefone, banco, agência e conta, titular e PIX (só o administrador salva).
+4. Na ficha do cliente: "Redigir proposta (PDF)". No editor, "Ver / Imprimir PDF" e "Registrar no funil como orçamento".
+
+## Fase 10: contratos e segundo modelo de proposta
+1. SQL Editor: rode `fase10-contratos.sql` (depois do `fase9-propostas.sql`).
+2. Envie os arquivos novos ao GitHub (conteúdo inteiro do zip).
+3. `/crm/propostas/empresa`: preencha também os dados do representante legal (nome, cargo, qualificação e CPF).
+4. Na proposta: escolha o modelo do PDF (clássico ou moderno) e use "Gerar contrato". O contrato nasce com as cláusulas do modelo da empresa, todas editáveis; depois: Ver / Imprimir PDF, Enviar pelo WhatsApp, anexar o PDF assinado e Marcar como assinado (bloqueia o texto e fecha a venda no funil quando a proposta foi registrada como orçamento).
+
+## Fase 11: medidor de markup nas propostas
+1. SQL Editor: rode `fase11-markup.sql` (depois do `fase10-contratos.sql`).
+2. Envie os arquivos novos ao GitHub (conteúdo inteiro do zip).
+3. Na proposta: informe o custo interno de cada item. O painel mostra custo, venda, lucro, margem, markup, simulador e desconto limite seguro. A meta de margem (padrão 35%) fica em Propostas > Dados da empresa. Custos e margem nunca aparecem no PDF do cliente.
+
+## Engenharia e orçamentos: etapas 2 e 3
+- Etapa 2 (banco): `eng-etapa2-estrutura.sql`, teste `eng-etapa2-teste.sql`, reversão `eng-etapa2-reversao.sql`.
+- Etapa 3 (cadastro): `/crm/engenharia`, `/crm/engenharia/materiais`, `/crm/engenharia/fornecedores`. Importação por CSV.
+- Testes automáticos das regras puras: `npm test` (Node 22 ou superior).
+
+## Engenharia e orçamentos, etapa 2 e 3
+1. SQL Editor: `eng-etapa2-estrutura.sql` e depois `eng-etapa2-teste.sql` (deve terminar em "TESTE OK"). Reversão: `eng-etapa2-reversao.sql`.
+2. Envie os arquivos do zip ao GitHub (atenção às pastas `app/crm/engenharia`, `components/engenharia`, `lib/engenharia` e `tests`).
+3. `/crm/engenharia`: fornecedores, chapas e fitas, ferragens, insumos e embalagens, com histórico de preços e importação por planilha CSV. Somente o administrador altera preços.
+4. Testes automáticos do cálculo e da leitura de planilhas: `npm test`.
+
+## Engenharia, Etapa 3: materiais e fornecedores
+1. Rode antes o `eng-etapa2-estrutura.sql` (e o teste, se ainda não rodou).
+2. SQL Editor: rode `eng-etapa3-materiais.sql`. No final deve aparecer `categorias_ok` com 1.
+3. Envie os arquivos novos ao GitHub (conteúdo inteiro do zip).
+4. No menu superior, "Materiais". Abas: MDF e chapas, Fitas de borda, Dobradiças, Corrediças, Calços e suportes, Outras ferragens, Insumos, Embalagens e Ferramentas.
+5. Só o administrador cadastra, altera e remove. "Remover" apaga o item; se ele já foi usado em estoque ou cálculo, o sistema pede para "Desativar", que o esconde sem apagar o histórico.
